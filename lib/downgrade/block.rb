@@ -7,7 +7,7 @@ module Downgrade
 
     def cache
       if Downgrade.block_switch.is_on?
-        Downgrade.cache_store.fetch(cache_key) do
+        Downgrade.cache_store.fetch(cache_key, expires_in: 10.minutes) do
           yield
         end
       else
