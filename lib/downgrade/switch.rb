@@ -7,7 +7,7 @@ module Downgrade
       @cache_second = 5
     end
 
-    def turn_on(ttl = 600)
+    def turn_on(ttl = 3600)
       Downgrade.redis.set(cache_key, 1, ex: ttl)
     end
 
