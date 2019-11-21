@@ -7,7 +7,7 @@ module Downgrade
 
     def call(env)
       if Downgrade.middleware_switch.is_on?
-        [503, { "Retry-After" => "5" }, ['{"message": "服务器不稳定，请稍后再试"}']]
+        [503, { "Retry-After" => "5", "Content-Type" => "application/json; charset=utf-8" }, ['{"message": "服务器不稳定，请稍后再试"}']]
       elsif Downgrade.path_switch.is_on?
         path_cache(env)
       else
