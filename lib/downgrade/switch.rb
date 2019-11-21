@@ -7,8 +7,8 @@ module Downgrade
       @cache_second = 5
     end
 
-    def turn_on(ttl = 3600)
-      Downgrade.redis.set(cache_key, 1, ex: ttl)
+    def turn_on(drop_percentage)
+      Downgrade.redis.set(cache_key, drop_percentage)
     end
 
     def turn_off
@@ -16,8 +16,12 @@ module Downgrade
     end
 
     def is_on?
+      rand(100) < drop_percentage
+    end
+
+    def drop_percentage
       Downgrade::Switch.cache_store.fetch(cache_key, expires_in: self.cache_second) do
-        Downgrade.redis.get(cache_key).present?
+        Downgrade.redis.get(cache_key).to_f
       end
     end
 
